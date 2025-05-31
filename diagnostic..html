@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uvéites Diagnostic Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --blue-500: #3b82f6;
+            --purple-500: #8b5cf6;
+            --cyan-500: #06b6d4;
+            --emerald-500: #10b981;
+            --amber-500: #f59e0b;
+            --rose-500: #f43f5e;
+            --violet-500: #8b5cf6;
+            --orange-500: #f97316;
+            --red-500: #ef4444;
+            --yellow-500: #eab308;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --white: #ffffff;
+            --slate-900: #0f172a;
+            --slate-300: #cbd5e1;
+        }
+       
+        body {
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--purple-500) 50%, var(--slate-900) 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--white);
+        }
+       
+        .gradient-text {
+            background: linear-gradient(90deg, var(--blue-500), var(--purple-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+       
+        .symptom-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+       
+        .symptom-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+       
+        .result-card {
+            transition: all 0.3s ease;
+        }
+       
+        .result-card:hover {
+            transform: scale(1.03);
+        }
+       
+        .blur-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="flex justify-center items-center mb-6">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-2xl mr-4 shadow-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-5xl font-bold gradient-text">
+                        Uvéites Diagnostic Tool
+                    </h1>
+                    <div class="h-1 w-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mt-2"></div>
+                </div>
+            </div>
+            <p class="text-slate-300 text-xl max-w-3xl mx-auto leading-relaxed">
+                Système d'aide au diagnostic différentiel basé sur l'analyse des signes cliniques ophtalmologiques
+            </p>
+        </div>
+
+        <div class="grid xl:grid-cols-4 gap-8">
+            <!-- Left Panel - Symptoms Selection -->
+            <div class="xl:col-span-3">
+                <div class="blur-container rounded-3xl shadow-2xl p-8">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-white flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 mr-3 text-blue-400">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Signes Cliniques
+                        </h2>
+                        <button id="reset-btn" class="flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 text-white border border-white/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            Réinitialiser
+                        </button>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-6" id="symptoms-container">
+                        <!-- Symptom categories will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Results -->
+            <div class="xl:col-span-1">
+                <div class="blur-container rounded-3xl shadow-2xl p-6 sticky top-8">
+                    <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 mr-3 text-green-400">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <line x1="10" y1="9" x2="8" y2="9"></line>
+                        </svg>
+                        Diagnostic
+                    </h2>
+
+                    <div id="results-placeholder" class="text-center py-16">
+                        <div class="bg-white/10 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-slate-400">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <p class="text-slate-300 text-lg">
+                            Sélectionnez les signes cliniques observés
+                        </p>
+                    </div>
+
+                    <div id="results-container" class="space-y-4 hidden">
+                        <!-- Results will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de données des pathologies
+        const pathologies = {
+            'SARCOIDOSE': {
+                name: 'Sarcoïdose',
+                severity: 'high',
+                signs: [
+                    'prc_granulomatous', 'prc_white', 'koeppe_bussacca', 'berlin_nodules',
+                    'sic', 'low_iop', 'vitreous_protein', 'snowballs', 'banquise', 'retinitis_nodular',
+                    'choroiditis', 'choroidal_nodules', 'neurorétinite', 'neuritis_granuloma',
+                    'vasculitis', 'periphlebitis_peripheral', 'vasculitis_focal', 'vasculitis_non_occlusive'
+                ]
+            },
+            'BEHÇET': {
+                name: 'Maladie de Behçet',
+                severity: 'high',
+                signs: [
+                    'prc_white', 'hypopyon', 'sic', 'low_iop', 'retinitis_fugace',
+                    'neurorétinite', 'neuritis_atrophy', 'vasculitis', 'vasculitis_arterial',
+                    'capillaritis', 'vasculitis_posterior', 'vasculitis_diffuse',
+                    'vasculitis_occlusive', 'ovcr'
+                ]
+            },
+            'SEP': {
+                name: 'Sclérose en Plaques (SEP)',
+                severity: 'high',
+                signs: [
+                    'prc_granulomatous', 'prc_white', 'koeppe_bussacca', 'tyndall_protein',
+                    'hypopyon', 'sic', 'low_iop', 'vitreous_protein', 'snowballs', 'banquise',
+                    'neurorétinite', 'vasculitis', 'periphlebitis_peripheral', 'vasculitis_focal',
+                    'vasculitis_non_occlusive'
+                ]
+            },
+            'HSV': {
+                name: 'Herpès Simplex Virus (HSV)',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_brown', 'decreased_sensitivity', 'endothelitis',
+                    'hypopyon', 'koeppe_bussacca', 'iris_atrophy', 'elevated_iop', 'snowballs',
+                    'banquise', 'retinitis', 'retinitis_necrotic', 'vasculitis', 'vasculitis_arterial',
+                    'vasculitis_non_occlusive'
+                ]
+            },
+            'CMV': {
+                name: 'Cytomégalovirus (CMV)',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_brown', 'koeppe_bussacca', 'snowballs', 'banquise',
+                    'retinitis', 'retinitis_necrotic', 'choroiditis', 'vasculitis', 'vasculitis_arterial',
+                    'vasculitis_non_occlusive'
+                ]
+            },
+            'VIROSES': {
+                name: 'Viroses (Général)',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_brown', 'prc_inferior', 'decreased_sensitivity',
+                    'endothelitis', 'elevated_iop', 'iris_atrophy', 'retinitis_necrotic',
+                    'vasculitis', 'vasculitis_arterial', 'vasculitis_diffuse', 'vasculitis_occlusive'
+                ]
+            },
+            'TBC': {
+                name: 'Tuberculose',
+                severity: 'high',
+                signs: [
+                    'prc_granulomatous', 'prc_yellow', 'endothelitis', 'koeppe_bussacca',
+                    'sic', 'snowballs', 'banquise', 'choroiditis', 'choroidal_nodules',
+                    'bouchut_tubercles', 'neurorétinite', 'vasculitis', 'vasculitis_focal',
+                    'vasculitis_non_occlusive'
+                ]
+            },
+            'SYPHILIS': {
+                name: 'Syphilis',
+                severity: 'high',
+                signs: [
+                    'prc_granulomatous', 'prc_yellow', 'koeppe_bussacca', 'sic', 'snowballs',
+                    'banquise', 'choroiditis', 'chorioretinitis_plaque', 'neurorétinite',
+                    'vasculitis', 'vasculitis_arterial', 'vasculitis_non_occlusive'
+                ]
+            },
+            'LYME': {
+                name: 'Maladie de Lyme',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_yellow', 'koeppe_bussacca', 'sic', 'snowballs',
+                    'banquise', 'vitreal_liquefaction_prepapillary', 'vasculitis', 'vasculitis_non_occlusive'
+                ]
+            },
+            'BARTONELLOSE': {
+                name: 'Bartonellose',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_yellow', 'koeppe_bussacca', 'sic', 'snowballs',
+                    'banquise', 'vitreal_liquefaction_prepapillary', 'neurorétinite', 'vasculitis',
+                    'vasculitis_non_occlusive'
+                ]
+            },
+            'VKH': {
+                name: 'Vogt-Koyanagi-Harada',
+                severity: 'high',
+                signs: [
+                    'prc_granulomatous', 'koeppe_bussacca', 'iris_atrophy', 'sic', 'choroiditis'
+                ]
+            },
+            'FUCHS': {
+                name: 'Syndrome de Fuchs',
+                severity: 'low',
+                signs: [
+                    'prc_granulomatous', 'prc_stellate', 'prc_superior', 'koeppe_bussacca',
+                    'iris_atrophy', 'subcapsular_cataract'
+                ]
+            },
+            'POSNER': {
+                name: 'Syndrome de Posner-Schlossman',
+                severity: 'low',
+                signs: [
+                    'prc_granulomatous', 'koeppe_bussacca', 'elevated_iop'
+                ]
+            },
+            'TOXOPLASMOSE': {
+                name: 'Toxoplasmose',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'koeppe_bussacca', 'sic', 'snowballs', 'banquise',
+                    'vitreal_liquefaction_focal', 'retinitis', 'retinitis_pigmentary',
+                    'vasculitis', 'vasculitis_arterial', 'vasculitis_non_occlusive'
+                ]
+            },
+            'TOXOCAROSE': {
+                name: 'Toxocarose',
+                severity: 'low',
+                signs: [
+                    'retinitis'
+                ]
+            },
+            'HAI': {
+                name: 'Hépatite Auto-immune',
+                severity: 'medium',
+                signs: [
+                    'prc_granulomatous', 'prc_white', 'koeppe_bussacca', 'sic', 'neurorétinite'
+                ]
+            },
+            'HLAB27': {
+                name: 'Uvéite HLA-B27+',
+                severity: 'medium',
+                signs: [
+                    'prc_white', 'hypopyon'
+                ]
+            },
+            'TINU': {
+                name: 'Syndrome TINU',
+                severity: 'low',
+                signs: [
+                    'prc_white'
+                ]
+            },
+            'AJI': {
+                name: 'Arthrite Juvénile Idiopathique',
+                severity: 'medium',
+                signs: [
+                    'prc_white', 'tyndall_protein'
+                ]
+            },
+            'LED': {
+                name: 'Lupus Érythémateux Disséminé',
+                severity: 'medium',
+                signs: [
+                    'retinitis', 'neurorétinite', 'vasculitis', 'vasculitis_arterial',
+                    'vasculitis_diffuse', 'vasculitis_occlusive'
+                ]
+            },
+            'SD_TACHES_BLANCHES': {
+                name: 'Syndrome des Taches Blanches',
+                severity: 'low',
+                signs: [
+                    'choroiditis'
+                ]
+            }
+        };
+
+        // Symptom categories
+        const symptomCategories = [
+            {
+                title: "Précipités Rétro-Cornéens (PRC)",
+                icon: "eye",
+                color: "from-blue-500 to-cyan-500",
+                items: [
+                    { id: 'prc_fine', label: 'Non granulomateux (fins)' },
+                    { id: 'prc_granulomatous', label: 'Granulomateux (intermédiaires/grands)' },
+                    { id: 'prc_yellow', label: 'Couleur jaunâtre' },
+                    { id: 'prc_white', label: 'Couleur blanchâtre' },
+                    { id: 'prc_brown', label: 'Couleur brunâtre' },
+                    { id: 'prc_stellate', label: 'Forme étoilée avec dendrites' },
+                    { id: 'prc_inferior', label: 'Siège inférieur' },
+                    { id: 'prc_superior', label: 'Siège supérieur' },
+                    { id: 'prc_diffuse', label: 'Siège diffus' }
+                ]
+            },
+            {
+                title: "Cornée",
+                icon: "target",
+                color: "from-emerald-500 to-teal-500",
+                items: [
+                    { id: 'corneal_sensitivity_normal', label: 'Sensibilité cornéenne conservée' },
+                    { id: 'decreased_sensitivity', label: 'Sensibilité cornéenne diminuée' },
+                    { id: 'endothelitis', label: 'Endothélite' }
+                ]
+            },
+            {
+                title: "Chambre Antérieure",
+                icon: "activity",
+                color: "from-purple-500 to-violet-500",
+                items: [
+                    { id: 'tyndall_protein', label: 'Tyndall protéique (Flare)' },
+                    { id: 'tyndall_cellular', label: 'Tyndall cellulaire' },
+                    { id: 'hypopyon', label: 'Hypopion' }
+                ]
+            },
+            {
+                title: "Iris",
+                icon: "search",
+                color: "from-amber-500 to-orange-500",
+                items: [
+                    { id: 'koeppe_bussacca', label: 'Nodules de Koeppe et Bussacca' },
+                    { id: 'berlin_nodules', label: 'Nodules de Berlin' },
+                    { id: 'iris_atrophy', label: 'Atrophie irienne' },
+                    { id: 'sic', label: 'Synéchies iridocapsulaires (SIC)' }
+                ]
+            },
+            {
+                title: "Cristallin",
+                icon: "target",
+                color: "from-indigo-500 to-blue-500",
+                items: [
+                    { id: 'cataract_general', label: 'Cataracte (tout type d\'uvéite)' },
+                    { id: 'subcapsular_cataract', label: 'Cataracte sous-capsulaire postérieure' }
+                ]
+            },
+            {
+                title: "Tension Oculaire",
+                icon: "activity",
+                color: "from-rose-500 to-pink-500",
+                items: [
+                    { id: 'elevated_iop', label: 'Tension oculaire élevée' },
+                    { id: 'low_iop', label: 'Tension oculaire diminuée' }
+                ]
+            },
+            {
+                title: "Vitré",
+                icon: "eye",
+                color: "from-cyan-500 to-blue-500",
+                items: [
+                    { id: 'vitreous_cellular', label: 'Tyndall cellulaire' },
+                    { id: 'vitreous_protein', label: 'Tyndall protéique' },
+                    { id: 'snowballs', label: 'Snowballs' },
+                    { id: 'banquise', label: 'Banquise' },
+                    { id: 'vitreal_liquefaction_prepapillary', label: 'Liquéfaction avancée prépapillaire' },
+                    { id: 'vitreal_liquefaction_focal', label: 'Liquéfaction en regard d\'un foyer' }
+                ]
+            },
+            {
+                title: "Rétinite",
+                icon: "target",
+                color: "from-green-500 to-emerald-500",
+                items: [
+                    { id: 'retinitis', label: 'Rétinite' },
+                    { id: 'retinitis_fugace', label: 'Rétinite fugace et superficielle' },
+                    { id: 'retinitis_nodular', label: 'Rétinite nodulaire' },
+                    { id: 'retinitis_necrotic', label: 'Rétinite nécrosante' },
+                    { id: 'retinitis_pigmentary', label: 'Remaniement pigmentaire associé' }
+                ]
+            },
+            {
+                title: "Choroïdite",
+                icon: "search",
+                color: "from-red-500 to-rose-500",
+                items: [
+                    { id: 'choroiditis', label: 'Choroïdite' },
+                    { id: 'chorioretinitis_plaque', label: 'Choriorétinite en plaque' },
+                    { id: 'choroidal_nodules', label: 'Nodules choroïdiens' },
+                    { id: 'bouchut_tubercles', label: 'Tubercules de Bouchut' }
+                ]
+            },
+            {
+                title: "Neurorétinite",
+                icon: "activity",
+                color: "from-violet-500 to-purple-500",
+                items: [
+                    { id: 'neurorétinite', label: 'Neurorétinite' },
+                    { id: 'neuritis_atrophy', label: 'Atrophie optique' },
+                    { id: 'neuritis_granuloma', label: 'Granulome du nerf optique' }
+                ]
+            },
+            {
+                title: "Vascularite",
+                icon: "target",
+                color: "from-orange-500 to-red-500",
+                items: [
+                    { id: 'vasculitis', label: 'Vascularite' },
+                    { id: 'vasculitis_venous', label: 'Vascularite veineuse' },
+                    { id: 'vasculitis_arterial', label: 'Vascularite artérielle' },
+                    { id: 'capillaritis', label: 'Capillarite' },
+                    { id: 'periphlebitis_peripheral', label: 'Périphlébite périphérique' },
+                    { id: 'vasculitis_posterior', label: 'Vascularite du pôle postérieur' },
+                    { id: 'vasculitis_focal', label: 'Vascularite focale/multifocale' },
+                    { id: 'vasculitis_diffuse', label: 'Vascularite diffuse' },
+                    { id: 'vasculitis_occlusive', label: 'Vascularite occlusive' },
+                    { id: 'vasculitis_non_occlusive', label: 'Vascularite non occlusive' },
+                    { id: 'ovcr', label: 'OVCR (Occlusion Veineuse Centrale Rétinienne)' }
+                ]
+            }
+        ];
+
+        // State management
+        let selectedSymptoms = {};
+        let results = [];
+       
+        // DOM Elements
+        const symptomsContainer = document.getElementById('symptoms-container');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsPlaceholder = document.getElementById('results-placeholder');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSymptomCategories();
+            resetBtn.addEventListener('click', resetTool);
+        });
+
+        // Render symptom categories
+        function renderSymptomCategories() {
+            symptomsContainer.innerHTML = '';
+           
+            symptomCategories.forEach(category => {
+                const categoryElement = document.createElement('div');
+                categoryElement.className = 'symptom-card rounded-2xl p-6';
+               
+                categoryElement.innerHTML = `
+                    <div class="bg-gradient-to-r ${category.color} p-3 rounded-xl inline-flex items-center mb-4">
+                        ${getIconSVG(category.icon)}
+                        <h3 class="text-lg font-semibold text-white ml-2">
+                            ${category.title}
+                        </h3>
+                    </div>
+                    <div class="space-y-3" id="category-${category.title.replace(/\s+/g, '-')}">
+                        ${category.items.map(item => `
+                            <label class="flex items-center p-3 hover:bg-white/10 rounded-lg cursor-pointer transition-all duration-200 group">
+                                <input type="checkbox"
+                                       id="symptom-${item.id}"
+                                       class="symptom-checkbox w-5 h-5 text-blue-500 border-2 border-white/30 rounded focus:ring-blue-500 focus:ring-2 bg-white/10"
+                                       data-id="${item.id}">
+                                <span class="ml-4 text-slate-200 group-hover:text-white transition-colors duration-200">${item.label}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+               
+                symptomsContainer.appendChild(categoryElement);
+            });
+           
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.symptom-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const symptomId = e.target.dataset.id;
+                    handleSymptomChange(symptomId, e.target.checked);
+                });
+            });
+        }
+
+        // Get SVG icon based on name
+        function getIconSVG(iconName) {
+            const icons = {
+                "eye": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>`,
+                "search": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
+                             <circle cx="11" cy="11" r="8"></circle>
+                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                           </svg>`,
+                "target": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
+                             <circle cx="12" cy="12" r="10"></circle>
+                             <circle cx="12" cy="12" r="6"></circle>
+                             <circle cx="12" cy="12" r="2"></circle>
+                           </svg>`,
+                "activity": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
+                               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                             </svg>`
+            };
+           
+            return icons[iconName] || '';
+        }
+
+        // Handle symptom selection change
+        function handleSymptomChange(symptomId, checked) {
+            selectedSymptoms[symptomId] = checked;
+            calculateResults();
+        }
+
+        // Calculate diagnostic results
+        function calculateResults() {
+            const selectedSymptomIds = Object.keys(selectedSymptoms).filter(id => selectedSymptoms[id]);
+           
+            if (selectedSymptomIds.length === 0) {
+                results = [];
+                renderResults();
+                return;
+            }
+
+            results = Object.entries(pathologies).map(([key, pathology]) => {
+                const matchingSymptoms = pathology.signs.filter(sign => selectedSymptomIds.includes(sign));
+                const score = matchingSymptoms.length;
+                const percentage = Math.round((score / selectedSymptomIds.length) * 100);
+               
+                return {
+                    key,
+                    name: pathology.name,
+                    severity: pathology.severity,
+                    score,
+                    percentage,
+                    matchingSymptoms: matchingSymptoms.length,
+                    totalSigns: pathology.signs.length
+                };
+            }).filter(result => result.score > 0)
+              .sort((a, b) => b.percentage - a.percentage || b.score - a.score);
+
+            renderResults();
+        }
+
+        // Render results
+        function renderResults() {
+            if (results.length === 0) {
+                if (Object.keys(selectedSymptoms).filter(id => selectedSymptoms[id]).length === 0) {
+                    // No symptoms selected
+                    resultsPlaceholder.innerHTML = `
+                        <div class="bg-white/10 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-slate-400">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <p class="text-slate-300 text-lg">
+                            Sélectionnez les signes cliniques observés
+                        </p>
+                    `;
+                } else {
+                    // Symptoms selected but no matches
+                    resultsPlaceholder.innerHTML = `
+                        <div class="bg-red-500/20 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-red-400">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <p class="text-slate-300 text-lg">
+                            Aucune correspondance trouvée
+                        </p>
+                    `;
+                }
+                resultsPlaceholder.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
+                return;
+            }
+           
+            resultsPlaceholder.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+           
+            const selectedCount = Object.keys(selectedSymptoms).filter(id => selectedSymptoms[id]).length;
+           
+            resultsContainer.innerHTML = `
+                <div class="text-sm text-slate-400 mb-6 bg-white/5 rounded-lg p-3">
+                    <span class="font-medium text-blue-400">${selectedCount}</span> signes sélectionnés
+                </div>
+               
+                ${results.slice(0, 8).map((result, index) => `
+                    <div class="result-card p-5 rounded-2xl bg-gradient-to-r ${getSeverityColor(result.percentage)} shadow-xl">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-lg leading-tight">${result.name}</h3>
+                            <span class="text-sm font-bold px-3 py-1 rounded-full bg-white/20">
+                                #${index + 1}
+                            </span>
+                        </div>
+                       
+                        <div class="mb-3">
+                            <div class="flex justify-between text-sm mb-2 font-medium">
+                                <span>Correspondance</span>
+                                <span class="text-lg">${result.percentage}%</span>
+                            </div>
+                            <div class="w-full bg-white/20 rounded-full h-3">
+                                <div class="bg-white/80 h-3 rounded-full transition-all duration-700 shadow-sm" style="width: ${result.percentage}%"></div>
+                            </div>
+                        </div>
+                       
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="font-medium">${getSeverityLabel(result.percentage)}</span>
+                            <span class="bg-white/20 px-2 py-1 rounded-lg">
+                                ${result.matchingSymptoms}/${result.totalSigns} signes
+                            </span>
+                        </div>
+                    </div>
+                `).join('')}
+               
+                <div class="mt-8 p-4 bg-amber-500/20 border border-amber-500/30 rounded-2xl backdrop-blur-sm">
+                    <div class="flex items-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-400 mr-2">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span class="text-sm font-bold text-amber-400">Important</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Cet outil constitue une aide au diagnostic différentiel. Le diagnostic définitif
+                        nécessite une évaluation clinique complète, des examens complémentaires et une
+                        corrélation avec le contexte clinique du patient.
+                    </p>
+                </div>
+            `;
+        }
+
+        // Get severity color class
+        function getSeverityColor(percentage) {
+            if (percentage >= 70) {
+                return 'from-red-500 to-red-600 text-white shadow-red-200';
+            } else if (percentage >= 50) {
+                return 'from-orange-500 to-orange-600 text-white shadow-orange-200';
+            } else if (percentage >= 30) {
+                return 'from-yellow-500 to-yellow-600 text-white shadow-yellow-200';
+            } else {
+                return 'from-gray-400 to-gray-500 text-white shadow-gray-200';
+            }
+        }
+
+        // Get severity label
+        function getSeverityLabel(percentage) {
+            if (percentage >= 70) return 'Très forte correspondance';
+            if (percentage >= 50) return 'Forte correspondance';
+            if (percentage >= 30) return 'Correspondance modérée';
+            return 'Faible correspondance';
+        }
+
+        // Reset tool
+        function resetTool() {
+            selectedSymptoms = {};
+            results = [];
+           
+            // Uncheck all checkboxes
+            document.querySelectorAll('.symptom-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+           
+            // Reset results display
+            resultsPlaceholder.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+           
+            // Reset placeholder to initial state
+            resultsPlaceholder.innerHTML = `
+                <div class="bg-white/10 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-slate-400">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <p class="text-slate-300 text-lg">
+                    Sélectionnez les signes cliniques observés
+                </p>
+            `;
+        }
+    </script>
+</body>
+</html>

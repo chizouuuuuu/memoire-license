@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant Ophtalmologie Cody</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a237e;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #546e7a;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .features {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(30, 136, 229, 0.15);
+            border: 1px solid rgba(30, 136, 229, 0.2);
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #1a237e;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #bbdefb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .feature-icon {
+            background: #e3f2fd;
+            color: #1e88e5;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .feature-content h3 {
+            color: #1a237e;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .feature-content p {
+            color: #546e7a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .specialties {
+            margin-top: 30px;
+            animation-delay: 0.2s;
+        }
+        
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .specialty {
+            background: #e3f2fd;
+            color: #1e88e5;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        
+        .specialty:hover {
+            background: #bbdefb;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(30, 136, 229, 0.2);
+        }
+        
+        .chat-container {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(30, 136, 229, 0.15);
+            border: 1px solid rgba(30, 136, 229, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            animation: slideInRight 0.6s ease-out;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+        }
+        
+        .header-content {
+            flex: 1;
+        }
+        
+        .header-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .header-subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f9fbfd;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .bot-message {
+            background: #e3f2fd;
+            color: #1a237e;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            background: #1e88e5;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid #e0e7ed;
+            background: white;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #bbdefb;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: #1e88e5;
+            box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+        }
+        
+        .send-button {
+            background: #1e88e5;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .send-button:hover {
+            background: #0d47a1;
+            transform: scale(1.05);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background: #e3f2fd;
+            border-radius: 20px;
+            align-self: flex-start;
+            max-width: 80px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #1e88e5;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .info-footer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(30, 136, 229, 0.1);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e88e5;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .info-icon {
+            background: #e3f2fd;
+            color: #1e88e5;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .chat-header {
+                padding: 15px 20px;
+            }
+            
+            .header-title {
+                font-size: 1.2rem;
+            }
+            
+            .specialties-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .chat-container {
+                height: 500px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="logo-text">Cody Ophtalmologie</div>
+            </div>
+            <p class="tagline">Assistant IA spécialisé en ophtalmologie pour les étudiants en médecine</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="features">
+                <div class="section-title">
+                    <i class="fas fa-star"></i>
+                    Fonctionnalités
+                </div>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>IA Spécialisée</h3>
+                            <p>Connaissance approfondie en ophtalmologie et pathologies oculaires</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-medical"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Ressources Actualisées</h3>
+                            <p>Accès aux dernières recherches et protocoles de traitement</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Support Pédagogique</h3>
+                            <p>Explications adaptées à votre niveau d'étude</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Disponible 24/7</h3>
+                            <p>Accès permanent pour vos révisions et questions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="specialties">
+                    <div class="section-title">
+                        <i class="fas fa-stethoscope"></i>
+                        Domaines Couverts
+                    </div>
+                    
+                    <div class="specialties-grid">
+                        <div class="specialty">Rétine</div>
+                        <div class="specialty">Cornée</div>
+                        <div class="specialty">Glaucome</div>
+                        <div class="specialty">Cataracte</div>
+                        <div class="specialty">Pédiatrie</div>
+                        <div class="specialty">Neuro-ophtalmo</div>
+                        <div class="specialty">Chirurgie</div>
+                        <div class="specialty">Diagnostic</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="header-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="header-content">
+                        <div class="header-title">Assistant Cody Ophtalmologie</div>
+                        <div class="header-subtitle">Posez vos questions sur l'ophtalmologie</div>
+                    </div>
+                    <div class="status-badge">
+                        <div class="status-indicator"></div>
+                        En ligne
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        Bonjour ! Je suis Cody, votre assistant spécialisé en ophtalmologie. Comment puis-je vous aider aujourd'hui ?
+                    </div>
+                    <div class="message bot-message">
+                        Voici quelques exemples de questions que vous pouvez me poser :
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li>Quels sont les symptômes du glaucome ?</li>
+                            <li>Expliquez-moi la chirurgie de la cataracte</li>
+                            <li>Quelles sont les causes de la dégénérescence maculaire ?</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="user-input" placeholder="Tapez votre question..." autocomplete="off">
+                    <button class="send-button" id="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-footer">
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <span>Conversations sécurisées</span>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <span>Conçu pour les étudiants</span>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <span>Compatible mobile</span>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <span>Mises à jour régulières</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            
+            // Exemples de questions/réponses pour l'ophtalmologie
+            const knowledgeBase = {
+                "bonjour": "Bonjour ! Comment puis-je vous aider avec vos questions en ophtalmologie ?",
+                "salut": "Salut ! Posez-moi vos questions sur la santé oculaire.",
+                "qu'est-ce que le glaucome ?": "Le glaucome est une maladie oculaire qui endommage le nerf optique, souvent causée par une pression intraoculaire élevée. Il peut entraîner une perte de vision progressive et est l'une des principales causes de cécité dans le monde.",
+                "symptômes du glaucome": "Le glaucome chronique (à angle ouvert) est souvent asymptomatique dans les premiers stades. Les symptômes peuvent inclure : une perte de vision périphérique, des douleurs oculaires, des maux de tête, une vision floue, des halos autour des lumières et des nausées dans les cas aigus.",
+                "traitement cataracte": "Le traitement de la cataracte est chirurgical. L'intervention, appelée phacoémulsification, consiste à retirer le cristallin opacifié et à le remplacer par un implant intraoculaire. C'est l'une des chirurgies les plus courantes et les plus sûres en ophtalmologie.",
+                "dégénérescence maculaire": "La dégénérescence maculaire liée à l'âge (DMLA) est une détérioration de la macula, la partie centrale de la rétine. Elle se présente sous deux formes : sèche (atrophique) et humide (exsudative). Les traitements incluent des injections intravitréennes et des compléments nutritionnels.",
+                "rétinopathie diabétique": "La rétinopathie diabétique est une complication du diabète qui affecte les vaisseaux sanguins de la rétine. Elle peut entraîner une perte de vision si elle n'est pas traitée. Le traitement comprend le contrôle strict du diabète, la photocoagulation au laser et les injections intravitréennes.",
+                "conjonctivite": "La conjonctivite est une inflammation de la conjonctive. Elle peut être virale, bactérienne, allergique ou irritative. Les symptômes incluent rougeur, démangeaisons, larmoiement et écoulement. Le traitement dépend de la cause : antibiotiques pour la forme bactérienne, antihistaminiques pour l'allergique.",
+                "merci": "Je vous en prie ! N'hésitez pas si vous avez d'autres questions en ophtalmologie."
+            };
+            
+            // Fonction pour ajouter un message dans le chat
+            function addMessage(text, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Fonction pour simuler une réponse de l'IA
+            function getBotResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                
+                // Chercher une réponse dans la base de connaissances
+                for (const [key, value] of Object.entries(knowledgeBase)) {
+                    if (lowerMessage.includes(key)) {
+                        return value;
+                    }
+                }
+                
+                // Réponses par défaut si aucune correspondance
+                const defaultResponses = [
+                    "Je suis spécialisé en ophtalmologie. Pourriez-vous reformuler votre question en rapport avec les yeux ou la vision ?",
+                    "En tant qu'assistant en ophtalmologie, je peux vous aider sur des sujets comme le glaucome, la cataracte, les maladies rétiniennes, etc. Posez-moi une question dans ce domaine !",
+                    "Je ne suis pas sûr de comprendre. Pourriez-vous préciser votre question sur l'ophtalmologie ?",
+                    "Je suis désolé, ma spécialité est l'ophtalmologie. Posez-moi une question sur les yeux, la vision ou les maladies oculaires."
+                ];
+                
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+            
+            // Fonction pour simuler le délai de réponse de l'IA
+            function simulateTyping() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('typing-indicator');
+                typingDiv.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return typingDiv;
+            }
+            
+            // Envoyer un message lorsque le bouton est cliqué
+            sendButton.addEventListener('click', function() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    userInput.value = '';
+                    
+                    // Afficher l'indicateur de saisie
+                    const typingIndicator = simulateTyping();
+                    
+                    // Simuler un délai de réponse
+                    setTimeout(() => {
+                        chatMessages.removeChild(typingIndicator);
+                        const response = getBotResponse(message);
+                        addMessage(response);
+                    }, 1500);
+                }
+            });
+            
+            // Permettre d'envoyer avec la touche Entrée
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            
+            // Animation au survol des fonctionnalités
+            const features = document.querySelectorAll('.feature-item, .specialty');
+            features.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

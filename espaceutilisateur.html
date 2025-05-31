@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Étudiant - Diagnostic Uvéites</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #57C5B6 0%, #7cdce9 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
+      height: fit-content;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar h2 {
+      color: #667eea;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    .user-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #667eea, #aec1d6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .user-details p {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .user-details strong {
+      color: #66b5ea;
+    }
+
+    .loading {
+      color: #888;
+      font-style: italic;
+    }
+
+    .main-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h2 {
+      color: #66c0ea;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .progress-card {
+      grid-column: span 2;
+      text-align: center;
+    }
+
+    .course-list {
+      list-style: none;
+    }
+
+    .course-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      margin: 10px 0;
+      background: rgba(102, 126, 234, 0.1);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .course-item:hover {
+      background: rgba(102, 126, 234, 0.2);
+      transform: translateX(5px);
+    }
+
+    .course-status {
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .completed { color: #4CAF50; }
+    .in-progress { color: #FF9800; }
+    .pending { color: #9E9E9E; }
+
+    .quiz-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .quiz-table th,
+    .quiz-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .quiz-table th {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .quiz-table tr:hover {
+      background: rgba(102, 126, 234, 0.05);
+    }
+
+    .score {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 20px;
+      color: white;
+    }
+
+    .score.excellent { background: #4CAF50; }
+    .score.good { background: #FF9800; }
+    .score.average { background: #2196F3; }
+
+    .circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(#667eea 0deg, #667eea calc(var(--progress) * 3.6deg), #e0e0e0 calc(var(--progress) * 3.6deg));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .circle-inner {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 20px;
+    }
+
+    .refresh-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .refresh-btn:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+     
+      .sidebar {
+        width: 100%;
+      }
+     
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+     
+      .progress-card {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <aside class="sidebar">
+      <h2>🎓 Espace Étudiant</h2>
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">K</div>
+        <div class="user-details">
+          <p><strong>Nom :</strong> <span id="userName" class="loading">Chargement...</span></p>
+          <p><strong>Niveau :</strong> <span id="userLevel" class="loading">Chargement...</span></p>
+          <p><strong>Université :</strong> <span id="userUniversity" class="loading">Chargement...</span></p>
+          <p><strong>Inscription :</strong> <span id="registrationDate" class="loading">Chargement...</span></p>
+        </div>
+        <button class="refresh-btn" onclick="loadUserData()">🔄 Actualiser</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <section class="card">
+        <h2>📘 Cours suivis</h2>
+        <ul class="course-list" id="courseList">
+          <li class="course-item">
+            <span class="course-status loading">⏳</span>
+            <span>Chargement des cours...</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>📝 Résultats des quiz</h2>
+        <table class="quiz-table">
+          <thead>
+            <tr>
+              <th>Cours</th>
+              <th>Score</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="quizResults">
+            <tr>
+              <td colspan="3" class="loading">Chargement des résultats...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card progress-card">
+        <h2>📈 Progression générale</h2>
+        <div class="circle" id="progressCircle" style="--progress: 0">
+          <div class="circle-inner">
+            <span id="progressText">0%</span>
+          </div>
+        </div>
+        <p>Progression dans le programme d'uvéites</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Plateforme Uvéites • Tous droits réservés</p>
+  </footer>
+
+  <script>
+    // Simulation de données utilisateur (à remplacer par vos appels API)
+    const userData = {
+      name: "Karim Benmansour",
+      level: "3e année médecine",
+      university: "Université d'Annaba",
+      registrationDate: "Septembre 2023",
+      avatar: "KB"
+    };
+
+    const courseData = [
+      { name: "Introduction aux uvéites", status: "completed" },
+      { name: "Anatomie de l'œil", status: "completed" },
+      { name: "Uvéites antérieures", status: "completed" },
+      { name: "Uvéites intermédiaires", status: "in-progress" },
+      { name: "Uvéites postérieures", status: "pending" },
+      { name: "Diagnostic différentiel", status: "pending" }
+    ];
+
+    const quizData = [
+      { course: "Introduction", score: 92, date: "15/01/2025" },
+      { course: "Anatomie", score: 88, date: "22/01/2025" },
+      { course: "Uvéites antérieures", score: 85, date: "05/02/2025" },
+      { course: "Diagnostic", score: 76, date: "18/02/2025" }
+    ];
+
+    function loadUserData() {
+      // Simuler un appel API
+      setTimeout(() => {
+        // Mettre à jour les informations utilisateur
+        document.getElementById('userName').textContent = userData.name;
+        document.getElementById('userName').classList.remove('loading');
+       
+        document.getElementById('userLevel').textContent = userData.level;
+        document.getElementById('userLevel').classList.remove('loading');
+       
+        document.getElementById('userUniversity').textContent = userData.university;
+        document.getElementById('userUniversity').classList.remove('loading');
+       
+        document.getElementById('registrationDate').textContent = userData.registrationDate;
+        document.getElementById('registrationDate').classList.remove('loading');
+       
+        document.getElementById('userAvatar').textContent = userData.avatar;
+
+        loadCourses();
+        loadQuizResults();
+        updateProgress();
+      }, 1000);
+    }
+
+    function loadCourses() {
+      const courseList = document.getElementById('courseList');
+      courseList.innerHTML = '';
+     
+      courseData.forEach(course => {
+        const li = document.createElement('li');
+        li.className = 'course-item';
+       
+        let statusIcon = '';
+        let statusClass = '';
+       
+        switch(course.status) {
+          case 'completed':
+            statusIcon = '✅';
+            statusClass = 'completed';
+            break;
+          case 'in-progress':
+            statusIcon = '⏳';
+            statusClass = 'in-progress';
+            break;
+          case 'pending':
+            statusIcon = '⭕';
+            statusClass = 'pending';
+            break;
+        }
+       
+        li.innerHTML = `
+          <span class="course-status ${statusClass}">${statusIcon}</span>
+          <span>${course.name}</span>
+        `;
+       
+        courseList.appendChild(li);
+      });
+    }
+
+    function loadQuizResults() {
+      const tbody = document.getElementById('quizResults');
+      tbody.innerHTML = '';
+     
+      quizData.forEach(quiz => {
+        const tr = document.createElement('tr');
+       
+        let scoreClass = '';
+        if (quiz.score >= 90) scoreClass = 'excellent';
+        else if (quiz.score >= 80) scoreClass = 'good';
+        else scoreClass = 'average';
+       
+        tr.innerHTML = `
+          <td>${quiz.course}</td>
+          <td><span class="score ${scoreClass}">${quiz.score}%</span></td>
+          <td>${quiz.date}</td>
+        `;
+       
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateProgress() {
+      const completedCourses = courseData.filter(course => course.status === 'completed').length;
+      const totalCourses = courseData.length;
+      const progress = Math.round((completedCourses / totalCourses) * 100);
+     
+      const progressCircle = document.getElementById('progressCircle');
+      const progressText = document.getElementById('progressText');
+     
+      // Animation de la progression
+      let currentProgress = 0;
+      const interval = setInterval(() => {
+        if (currentProgress <= progress) {
+          progressCircle.style.setProperty('--progress', currentProgress);
+          progressText.textContent = currentProgress + '%';
+          currentProgress++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 30);
+    }
+
+    // Charger les données au démarrage
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+    });
+
+    // Simuler des mises à jour en temps réel (optionnel)
+    setInterval(() => {
+      // Ici vous pourriez faire des appels périodiques à votre API
+      // pour mettre à jour les données en temps réel
+    }, 30000); // Toutes les 30 secondes
+
+
+// Au lieu de userData = {...}, faire un appel API :
+fetch('/api/user/profile')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('userName').textContent = data.name;
+    // etc...
+  });
+
+// Pour les cours :
+fetch('/api/user/courses')
+  .then(response => response.json())
+  .then(courses => loadCourses(courses));
+
+// Pour les quiz :
+fetch('/api/user/quiz-results')
+  .then(response => response.json())
+  .then(results => loadQuizResults(results));
+
+
+  </script>
+
+</body>
+</html>

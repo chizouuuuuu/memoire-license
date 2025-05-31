@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Ophta Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(ellipse at top, #1e3c72, #2a5298);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            width: 100%;
+            max-width: 800px;
+            animation: slideUp 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #15360d 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #4ba268 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .verification-notice {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8fafc;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .user-type {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label {
+            display: block;
+            padding: 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radio-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-label {
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-label::before {
+            left: 0;
+        }
+
+        .conditional-fields {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .conditional-fields.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 20px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 0;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .form-row, .user-type {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">OL</div>
+            <h1>Ophta Learning</h1>
+            <p class="subtitle">Plateforme de formation médicale en ophtalmologie</p>
+        </div>
+
+        <div class="verification-notice">
+            <strong>Vérification obligatoire :</strong> Toutes les inscriptions sont soumises à validation. Des documents justificatifs seront demandés pour confirmer votre statut académique ou professionnel.
+        </div>
+
+        <form id="inscriptionForm">
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="section-icon">1</div>
+                    Type de profil
+                </div>
+                <div class="user-type">
+                    <div class="radio-option">
+                        <input type="radio" id="etudiant" name="userType" value="etudiant" required>
+                        <label for="etudiant" class="radio-label">
+                            Étudiant en Médecine / Interne
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="professeur" name="userType" value="professeur" required>
+                        <label for="professeur" class="radio-label">
+                            Professeur / Médecin
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="section-icon">2</div>
+                    Informations personnelles
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nom">Nom de famille <span class="required">*</span></label>
+                        <input type="text" id="nom" name="nom" required pattern="[A-Za-zÀ-ÿ\s-]{2,}" title="Minimum 2 caractères, lettres uniquement">
+                        <div class="error-message">Nom invalide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prénom <span class="required">*</span></label>
+                        <input type="text" id="prenom" name="prenom" required pattern="[A-Za-zÀ-ÿ\s-]{2,}" title="Minimum 2 caractères, lettres uniquement">
+                        <div class="error-message">Prénom invalide</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dateNaissance">Date de naissance <span class="required">*</span></label>
+                        <input type="date" id="dateNaissance" name="dateNaissance" required min="1960-01-01" max="2005-12-31">
+                        <div class="error-message">Date de naissance invalide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lieuNaissance">Lieu de naissance <span class="required">*</span></label>
+                        <input type="text" id="lieuNaissance" name="lieuNaissance" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email institutionnel <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required pattern=".*\.(edu|ac|univ)\..*" title="Email institutionnel requis (.edu, .ac, .univ)">
+                        <div class="error-message">Email institutionnel requis</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Numéro de téléphone <span class="required">*</span></label>
+                        <input type="tel" id="telephone" name="telephone" required pattern="[0-9+\s-]{10,15}">
+                        <div class="error-message">Numéro de téléphone invalide</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="section-icon">3</div>
+                    Informations académiques/professionnelles
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="faculte">Faculté/Institution <span class="required">*</span></label>
+                        <select id="faculte" name="faculte" required>
+                            <option value="">Sélectionnez votre institution</option>
+                            <option value="alger1">Université d'Alger 1 - Faculté de Médecine</option>
+                            <option value="alger2">Université d'Alger 2 - Faculté de Médecine</option>
+                            <option value="oran">Université d'Oran 1 - Faculté de Médecine</option>
+                            <option value="constantine">Université Constantine 3 - Faculté de Médecine</option>
+                            <option value="annaba">Université Badji Mokhtar Annaba - Faculté de Médecine</option>
+                            <option value="blida">Université Saad Dahlab Blida - Faculté de Médecine</option>
+                            <option value="setif">Université Ferhat Abbas Sétif - Faculté de Médecine</option>
+                            <option value="tlemcen">Université Abou Bekr Belkaïd Tlemcen - Faculté de Médecine</option>
+                            <option value="batna">Université Hadj Lakhdar Batna - Faculté de Médecine</option>
+                            <option value="bejaia">Université Abderrahmane Mira Béjaïa - Faculté de Médecine</option>
+                            <option value="autre">Autre institution (sera vérifiée)</option>
+                        </select>
+                    </div>
+                    <!-- Champ numéro étudiant pour les étudiants -->
+                    <div id="numeroEtudiantGroup" class="form-group">
+                        <label for="numeroEtudiant">Numéro d'étudiant/Matricule <span class="required">*</span></label>
+                        <input type="text" id="numeroEtudiant" name="numeroEtudiant" pattern="[A-Za-z0-9]{6,20}" title="6-20 caractères alphanumériques">
+                        <div class="error-message">Numéro d'étudiant/matricule invalide</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champs spécifiques aux étudiants -->
+            <div id="etudiantFields" class="conditional-fields">
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">4</div>
+                        Informations académiques
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="niveau">Niveau d'études <span class="required">*</span></label>
+                            <select id="niveau" name="niveau">
+                                <option value="">Sélectionnez votre niveau</option>
+                                <option value="1eme-annee">1ère année médecine</option>
+                                <option value="2eme-annee">2ème année médecine</option>
+                                <option value="3eme-annee">3ème année médecine</option>
+                                <option value="4eme-annee">4ème année médecine</option>
+                                <option value="5eme-annee">5ème année médecine</option>
+                                <option value="6eme-annee">6ème année médecine</option>
+                                <option value="interne-1">Interne 1ère année</option>
+                                <option value="interne-2">Interne 2ème année</option>
+                                <option value="interne-3">Interne 3ème année</option>
+                                <option value="interne-4">Interne 4ème année</option>
+                                <option value="resident-ophtalmo">Résident en ophtalmologie</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="anneeEtude">Année d'étude actuelle <span class="required">*</span></label>
+                            <select id="anneeEtude" name="anneeEtude">
+                                <option value="">Sélectionnez l'année</option>
+                                <option value="2024-2025">2024-2025</option>
+                                <option value="2023-2024">2023-2024</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="certificatEtudiant">Certificat de scolarité <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="certificatEtudiant" name="certificatEtudiant" accept=".pdf,.jpg,.jpeg,.png">
+                            <label for="certificatEtudiant" class="file-upload-label">
+                                Cliquez pour télécharger votre certificat de scolarité<br>
+                                <small>Formats acceptés: PDF, JPG, PNG (Max: 5MB)</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champs spécifiques aux professeurs -->
+            <div id="professeurFields" class="conditional-fields">
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">4</div>
+                        Informations professionnelles
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="grade">Grade/Titre <span class="required">*</span></label>
+                            <select id="grade" name="grade">
+                                <option value="">Sélectionnez votre grade</option>
+                                <option value="professeur">Professeur</option>
+                                <option value="maitre-conference-a">Maître de Conférences A</option>
+                                <option value="maitre-conference-b">Maître de Conférences B</option>
+                                <option value="maitre-assistant">Maître Assistant</option>
+                                <option value="chef-service">Chef de Service</option>
+                                <option value="medecin-specialiste">Médecin Spécialiste</option>
+                                <option value="assistant-hospitalier">Assistant Hospitalier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="specialite">Spécialité <span class="required">*</span></label>
+                            <select id="specialite" name="specialite">
+                                <option value="">Sélectionnez votre spécialité</option>
+                                <option value="ophtalmologie">Ophtalmologie</option>
+                                <option value="chirurgie-ophtalmo">Chirurgie Ophtalmologique</option>
+                                <option value="medecine-generale">Médecine Générale</option>
+                                <option value="autre-specialite">Autre spécialité médicale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experienceAnnees">Années d'expérience <span class="required">*</span></label>
+                            <select id="experienceAnnees" name="experienceAnnees">
+                                <option value="">Sélectionnez</option>
+                                <option value="1-5">1-5 ans</option>
+                                <option value="6-10">6-10 ans</option>
+                                <option value="11-15">11-15 ans</option>
+                                <option value="16-20">16-20 ans</option>
+                                <option value="20+">Plus de 20 ans</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="etablissement">Établissement de travail <span class="required">*</span></label>
+                            <input type="text" id="etablissement" name="etablissement" placeholder="CHU, Clinique, Cabinet privé...">
+                        </div>
+                    </div>
+
+                    <!-- Nouveau champ Diplôme pour les professeurs -->
+                    <div class="form-group">
+                        <label for="diplome">Diplôme principal <span class="required">*</span></label>
+                        <input type="text" id="diplome" name="diplome" placeholder="Ex: Doctorat en Médecine, Spécialisation en Ophtalmologie">
+                        <div class="error-message">Veuillez saisir votre diplôme principal</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cv">CV et diplômes <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="cv" name="cv" accept=".pdf">
+                            <label for="cv" class="file-upload-label">
+                                Téléchargez votre CV et copies de diplômes<br>
+                                <small>Format PDF uniquement (Max: 10MB)</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motivationEnseignement">Motivation pour l'enseignement <span class="required">*</span></label>
+                        <textarea id="motivationEnseignement" name="motivationEnseignement" rows="4" placeholder="Décrivez votre motivation à enseigner sur Ophta Learning et votre expérience pédagogique..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="section-icon">5</div>
+                    Validation et engagement
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="acceptTerms" name="acceptTerms" required style="width: auto; margin-right: 10px;">
+                        J'atteste sur l'honneur que toutes les informations fournies sont exactes et je comprends que toute fausse déclaration entraînera l'annulation de mon inscription <span class="required">*</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="acceptVerification" name="acceptVerification" required style="width: auto; margin-right: 10px;">
+                        J'accepte que mes informations soient vérifiées auprès de mon institution <span class="required">*</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Soumettre ma candidature
+            </button>
+
+            <div class="success-message" id="successMessage">
+                Votre inscription a été soumise avec succès ! Vous recevrez un email de confirmation sous 48h après vérification de vos documents.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('inscriptionForm');
+            const userTypeRadios = document.querySelectorAll('input[name="userType"]');
+            const etudiantFields = document.getElementById('etudiantFields');
+            const professeurFields = document.getElementById('professeurFields');
+            const numeroEtudiantGroup = document.getElementById('numeroEtudiantGroup');
+            const numeroEtudiantInput = document.getElementById('numeroEtudiant');
+            const diplomeInput = document.getElementById('diplome');
+
+            // Initialisation des champs conditionnels
+            function initConditionalFields() {
+                numeroEtudiantGroup.style.display = 'block';
+                diplomeInput.required = false;
+                etudiantFields.classList.remove('show');
+                professeurFields.classList.remove('show');
+            }
+
+            // Gestion de l'affichage conditionnel des champs
+            userTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'etudiant') {
+                        etudiantFields.classList.add('show');
+                        professeurFields.classList.remove('show');
+                        numeroEtudiantGroup.style.display = 'block';
+                        // Rendre les champs étudiant obligatoires
+                        document.getElementById('niveau').required = true;
+                        document.getElementById('anneeEtude').required = true;
+                        document.getElementById('certificatEtudiant').required = true;
+                        numeroEtudiantInput.required = true;
+                        // Retirer l'obligation des champs professeur
+                        document.getElementById('grade').required = false;
+                        document.getElementById('specialite').required = false;
+                        document.getElementById('experienceAnnees').required = false;
+                        document.getElementById('etablissement').required = false;
+                        document.getElementById('cv').required = false;
+                        document.getElementById('motivationEnseignement').required = false;
+                        diplomeInput.required = false;
+                    } else if (this.value === 'professeur') {
+                        professeurFields.classList.add('show');
+                        etudiantFields.classList.remove('show');
+                        numeroEtudiantGroup.style.display = 'none';
+                        // Rendre les champs professeur obligatoires
+                        document.getElementById('grade').required = true;
+                        document.getElementById('specialite').required = true;
+                        document.getElementById('experienceAnnees').required = true;
+                        document.getElementById('etablissement').required = true;
+                        document.getElementById('cv').required = true;
+                        document.getElementById('motivationEnseignement').required = true;
+                        diplomeInput.required = true;
+                        // Retirer l'obligation des champs étudiant
+                        document.getElementById('niveau').required = false;
+                        document.getElementById('anneeEtude').required = false;
+                        document.getElementById('certificatEtudiant').required = false;
+                        numeroEtudiantInput.required = false;
+                    }
+                });
+            });
+
+            // Validation en temps réel
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearError);
+            });
+
+            function validateField(e) {
+                const field = e.target;
+                const errorElement = field.parentNode.querySelector('.error-message');
+                
+                if (!field.checkValidity()) {
+                    field.style.borderColor = '#ef4444';
+                    if (errorElement) {
+                        errorElement.style.display = 'block';
+                    }
+                } else {
+                    field.style.borderColor = '#10b981';
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                }
+            }
+
+            function clearError(e) {
+                const field = e.target;
+                const errorElement = field.parentNode.querySelector('.error-message');
+                field.style.borderColor = '#e2e8f0';
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            // Gestion de la soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Valider tous les champs
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        input.style.borderColor = '#ef4444';
+                        const errorElement = input.parentNode.querySelector('.error-message');
+                        if (errorElement) {
+                            errorElement.style.display = 'block';
+                        }
+                        isValid = false;
+                    }
+                });
+                
+                if (isValid) {
+                    // Simulation de soumission réussie
+                    const submitBtn = document.getElementById('submitBtn');
+                    const successMessage = document.getElementById('successMessage');
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Envoi en cours...';
+                    
+                    setTimeout(() => {
+                        successMessage.style.display = 'block';
+                        form.reset();
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Soumettre ma candidature';
+                        initConditionalFields();
+                        
+                        // Faire défiler jusqu'au message de succès
+                        successMessage.scrollIntoView({ behavior: 'smooth' });
+                    }, 1500);
+                } else {
+                    // Faire défiler jusqu'au premier champ invalide
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            // Initialisation
+            initConditionalFields();
+        });
+    </script>
+</body>
+</html>

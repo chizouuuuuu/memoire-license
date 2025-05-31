@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact - Diagnostic Uvéite</title>
+<meta name="description" content="Contactez-nous pour toute question concernant le diagnostic étiologique des uvéites." />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #57C5B6, #1597E5);
+    color: #333;
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  .container {
+    background: white;
+    border-radius: 25px;
+    padding: 50px 40px;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(21, 151, 229, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at center, #57C5B6, transparent 70%);
+    opacity: 0.3;
+    animation: pulse 6s ease-in-out infinite;
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3;}
+    50% { transform: scale(1.2); opacity: 0.15;}
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #57C5B6;
+    padding: 12px 20px;
+    box-shadow: 0 2px 10px rgba(21, 151, 229, 0.5);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  nav a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+
+  nav a:hover {
+    color: #f0f0f0;
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 3rem;
+    margin-bottom: 25px;
+    color: #1597E5;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1597E5;
+  }
+
+  input, textarea {
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    font-size: 1rem;
+    background-color: white;
+    color: #333;
+    resize: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #1597E5;
+    box-shadow: 0 0 8px rgba(21, 151, 229, 0.3);
+  }
+
+  .error {
+    border-color: #ff4d6d !important;
+    box-shadow: 0 0 8px rgba(255, 77, 109, 0.3) !important;
+  }
+
+  .error-message {
+    color: #ff4d6d;
+    font-size: 0.9rem;
+    margin-top: -15px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  button {
+    padding: 14px 0;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(90deg, #57C5B6, #1597E5);
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(21, 151, 229, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(21, 151, 229, 0.8);
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .loader {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1597E5;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -9px;
+    margin-top: -9px;
+    display: none;
+  }
+
+  button.loading .loader {
+    display: block;
+  }
+
+  button.loading span {
+    visibility: hidden;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+
+  a.return-home {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: #1597E5;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  a.return-home:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 30px 20px;
+    }
+    h1 {
+      font-size: 2.2rem;
+    }
+    button {
+      font-size: 1rem;
+    }
+    nav {
+      gap: 15px;
+      padding: 10px 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Contactez-nous</h1>
+    <form id="contactForm" novalidate>
+      <label for="name">Nom complet</label>
+      <input type="text" id="name" name="name" placeholder="Votre nom" required />
+      <div class="error-message" id="nameError" aria-live="polite"></div>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Votre email" required />
+      <div class="error-message" id="emailError" aria-live="polite"></div>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Votre message..." required></textarea>
+      <div class="error-message" id="messageError" aria-live="polite"></div>
+
+      <button type="submit" id="submitBtn">
+        <span>Envoyer</span>
+        <div class="loader"></div>
+      </button>
+    </form>
+    <a href="accueil.html" class="return-home">Retour à l'accueil</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(input, errorElem, message) {
+      input.classList.add('error');
+      errorElem.textContent = message;
+    }
+
+    function clearError(input, errorElem) {
+      input.classList.remove('error');
+      errorElem.textContent = '';
+    }
+
+    function validateField(field, errorElem, validationFn, errorMessage) {
+      if (!validationFn(field.value.trim())) {
+        showError(field, errorElem, errorMessage);
+        return false;
+      } else {
+        clearError(field, errorElem);
+        return true;
+      }
+    }
+
+    // Live validation on input
+    nameInput.addEventListener('input', () => {
+      validateField(nameInput, nameError, v => v !== '', 'Le nom est requis.');
+    });
+
+    emailInput.addEventListener('input', () => {
+      validateField(emailInput, emailError, v => v !== '' && validateEmail(v), 'L\'email n\'est pas valide.');
+    });
+
+    messageInput.addEventListener('input', () => {
+      validateField(messageInput, messageError, v => v !== '', 'Le message est requis.');
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      let isValid = true;
+
+      // Validate Name
+      if (!validateField(nameInput, nameError, v => v !== '', 'Le nom est requis.')) {
+        isValid = false;
+      }
+
+      // Validate Email
+      if (!validateField(emailInput, emailError, v => v !== '' && validateEmail(v), 'L\'email n\'est pas valide.')) {
+        isValid = false;
+      }
+
+      // Validate Message
+      if (!validateField(messageInput, messageError, v => v !== '', 'Le message est requis.')) {
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Disable button and show loader
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      // Simulate sending message (e.g., via API)
+      setTimeout(() => {
+        alert('Merci pour votre message ! Nous vous répondrons bientôt.');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        form.reset();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

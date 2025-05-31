@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OphtaLearning - Plateforme Médicale</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1a5f7a;
+      --secondary: #159895;
+      --accent: #57C5B6;
+      --text-dark: #2B4865;
+      --text-light: #f8fbfe;
+      --warning: #e74c3c;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--text-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .main-header {
+      background: var(--primary);
+      padding: 1rem 5%;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      color: var(--text-light);
+      font-size: 1.5rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      color: var(--accent);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--text-light);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .auth-btns {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-auth {
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-login {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .btn-login:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn-signup {
+      border: 2px solid var(--text-light);
+      color: var(--text-light);
+      background: transparent;
+    }
+
+    .btn-signup:hover {
+      background: var(--text-light);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      padding: 8rem 5% 4rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      background: var(--accent);
+      color: var(--text-light);
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .features {
+      padding: 4rem 5%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .main-footer {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 2rem 5%;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section a {
+      color: var(--text-light);
+      text-decoration: none;
+      line-height: 2;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+      border-top: 3px solid #3498db;
+    }
+
+    footer .social-icons {
+      margin-top: 10px;
+    }
+
+    footer .social-icons a {
+      color: #fff;
+      margin: 0 10px;
+      font-size: 20px;
+      transition: color 0.3s;
+      text-decoration: none;
+    }
+
+    footer .social-icons a:hover {
+      color: #3498db;
+    }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      color: var(--accent);
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    /* Message d'avertissement dans le modal de connexion */
+    .access-warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .access-warning .warning-icon {
+      color: var(--warning);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .access-warning h3 {
+      color: var(--warning);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .access-warning p {
+      color: #856404;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(87, 197, 182, 0.1);
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-submit:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn-create-account {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn-create-account:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-warning:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--primary);
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .cta-container {
+        flex-direction: column;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .auth-btns {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <nav class="navbar">
+      <a href="accueil.html" class="logo">
+        <i class="fas fa-robot"></i>
+        OphtaLearning
+      </a>
+      <ul class="nav-menu">
+        <li><a href="accueil.html" class="active">Accueil</a></li>
+        <li><a href="#" onclick="checkAccess('cours')">Cours</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="diagnostic.html">Diagnostic</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="auth-btns">
+        <span class="btn-auth btn-login" onclick="openModal('login')">Connexion</span>
+        <a href="inscription.html" class="btn-auth btn-signup">Créer un compte</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Formation en Ophtalmologie Avancée</h1>
+      <p>Maîtrisez les pathologies oculaires avec nos ressources interactives</p>
+      <div class="cta-container">
+        <a href="quiz.html" class="cta-btn">
+          <i class="fas fa-brain"></i> Commencer un Quiz
+        </a>
+        <span class="cta-btn" onclick="checkAccess('cours')">
+          <i class="fas fa-book-open"></i> Voir les Cours
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Section -->
+  <section class="features">
+    <div class="feature-card">
+      <i class="fas fa-robot"></i>
+      <h3>Assistant IA</h3>
+      <p>Diagnostic assisté par intelligence artificielle</p>
+      <a href="robotmedical.html" class="cta-btn">Essayer maintenant</a>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('login')">&times;</span>
+     
+      <!-- Message d'avertissement (affiché seulement si accès restreint) -->
+      <div class="access-warning" id="accessWarning" style="display: none;">
+        <div class="warning-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3>Accès Restreint</h3>
+        <p>Cette section est réservée aux utilisateurs inscrits. Connectez-vous pour accéder aux cours d'ophtalmologie.</p>
+      </div>
+     
+      <h2><i class="fas fa-sign-in-alt"></i> Connexion</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="votre@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" name="password" required placeholder="••••••••" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-sign-in-alt"></i> Se connecter
+          </button>
+          <a href="inscription.html" class="btn-create-account">
+            <i class="fas fa-user-plus"></i> Créer un compte
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 OphtaLearning - Tous droits réservés</p>
+    <p>Contact: contact@ophtalearning.com</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Simulation de l'état de connexion
+    let isLoggedIn = false;
+
+    // Fonction pour vérifier l'accès aux contenus restreints
+    function checkAccess(section) {
+      if (section === 'cours' && !isLoggedIn) {
+        // Afficher le message d'avertissement dans le modal de connexion
+        document.getElementById('accessWarning').style.display = 'block';
+        openModal('login');
+      } else {
+        // Rediriger vers la page appropriée
+        switch(section) {
+          case 'cours':
+            window.location.href = 'cours.html';
+            break;
+          default:
+            console.log('Section non trouvée');
+        }
+      }
+    }
+
+    // Fonctions pour gérer les modals
+    function openModal(type) {
+      if (type === 'login') {
+        document.getElementById('loginModal').style.display = 'flex';
+      }
+      // Si c'est un accès normal à la connexion, cacher le message d'avertissement
+      if (type === 'login' && !document.getElementById('accessWarning').style.display.includes('block')) {
+        document.getElementById('accessWarning').style.display = 'none';
+      }
+    }
+   
+    function closeModal(type) {
+      if (type === 'login') {
+        document.getElementById('loginModal').style.display = 'none';
+        // Réinitialiser le message d'avertissement
+        document.getElementById('accessWarning').style.display = 'none';
+      }
+    }
+
+    // Fermer les modals en cliquant à l'extérieur
+    window.onclick = function(e) {
+      const loginModal = document.getElementById('loginModal');
+     
+      if (e.target === loginModal) {
+        closeModal('login');
+      }
+    }
+
+    // Gestion du formulaire de connexion
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+     
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+     
+      // Validation simple
+      if (email && password) {
+        // Animation de chargement
+        const submitBtn = document.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+       
+        // Simulation d'une authentification
+        setTimeout(() => {
+          // Marquer l'utilisateur comme connecté
+          isLoggedIn = true;
+         
+          // Fermer le modal
+          closeModal('login');
+         
+          // Réinitialiser le formulaire
+          document.getElementById('loginForm').reset();
+          submitBtn.innerHTML = originalText;
+         
+          // Optionnel: afficher un message de succès
+          alert('Connexion réussie ! Vous pouvez maintenant accéder aux cours.');
+         
+          // Redirection vers la page utilisateur (optionnel)
+          // window.location.href = 'espaceutilisateur.html';
+        }, 1000);
+      } else {
+        alert('Veuillez remplir tous les champs');
+      }
+    });
+
+    // Fonction pour déconnecter l'utilisateur (à ajouter si nécessaire)
+    function logout() {
+      isLoggedIn = false;
+      alert('Vous avez été déconnecté.');
+    }
+  </script>
+
+</body>
+</html>
